@@ -18,6 +18,18 @@ and flows F-1, F-2 and F-3. Post-login screens are out of scope.
 The emailed passcode is **7336**. Any syntactically valid email works. Nothing
 talks to a backend; every value is a placeholder.
 
+`/login?platform=android` renders the Android variant of LG-5 — a fingerprint
+icon labelled "Biometric" instead of Face ID. It is a URL variant rather than an
+on-screen switch so the shipped screen carries no extra control.
+
+`/home` is where F-2 lands and follows **PL-1**: greeting, Current and Available
+Balance, Important Messages, the four quick actions, and one card in each status
+the card flows need (Shipped, Active, Suspended). Its rows are **display-only** —
+Card Details, Activate Card, Unblock Card and Transaction History are outside
+this prototype's scope, so nothing is drawn as a tap target that leads nowhere.
+A "Back to Login" control in the header returns to the start of the flows; it is
+a prototype affordance, not product UI.
+
 ## What is real, not mocked
 
 Fields accept typing and buttons enable only on valid input, so the flows behave

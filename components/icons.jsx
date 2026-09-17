@@ -101,6 +101,87 @@ export function AlertIcon({ size = 16 }) {
   );
 }
 
+export function ArrowLeft({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} strokeWidth="2.2" aria-hidden="true">
+      <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+    </svg>
+  );
+}
+
+export function ChevronRight({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="m9 5 7 7-7 7" />
+    </svg>
+  );
+}
+
+export function TransactionsIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M8 6h12M8 6 11 3M8 6l3 3" />
+      <path d="M16 18H4m12 0-3-3m3 3-3 3" />
+    </svg>
+  );
+}
+
+export function TransfersIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M12 3v18" />
+      <path d="M8 7.5 12 3.5l4 4M16 16.5 12 20.5l-4-4" />
+    </svg>
+  );
+}
+
+export function RecipientsIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M3.5 19a5.5 5.5 0 0 1 11 0" />
+      <path d="M16 6.2a3.2 3.2 0 0 1 0 5.9M17.5 19a5.6 5.6 0 0 0-1.6-3.9" />
+    </svg>
+  );
+}
+
+export function MoreIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.8" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.8" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.8" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.8" />
+    </svg>
+  );
+}
+
+export function HomeIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19Z" />
+    </svg>
+  );
+}
+
+export function UserIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <circle cx="12" cy="8.5" r="3.5" />
+      <path d="M5 19.5a7 7 0 0 1 14 0" />
+    </svg>
+  );
+}
+
+export function CardIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="M2.5 9.5h19" />
+    </svg>
+  );
+}
+
 export function StatusIcons() {
   return (
     <svg width="72" height="14" viewBox="0 0 72 14" fill="none" aria-hidden="true">

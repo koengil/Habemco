@@ -1,48 +1,50 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FaceIdIcon, FingerprintIcon } from "../../components/icons";
-import { Button, Field, Footer, Grow, Hero, Message, Sheet } from "../../components/ui";
+import { Button, Field, Footer, Grow, Hero, Sheet } from "../../components/ui";
 import { isValidEmail } from "../../lib/password";
 
 /**
  * Login — Section 5.1.
  *
  * LG-1 Email replaces Username, no asterisks.
- * LG-2 A single "Forgot password", right-aligned, body-text colour.
+ * LG-2 A single "Forgot password", right-aligned, body-text colour, no underline.
  * LG-3 "Log in" replaces "Get Started"; disabled until the form is valid, which
  *      is how the live app gates it (isDirty && isValid && !error).
  * LG-4 "Don't have an account? Register" replaces the "Enroll" link.
- * LG-5 Face ID, with an Android Biometric variant.
+ * LG-5 Face ID is the primary variant. The Android "Biometric" variant is a
+ *      separate frame in the Figma build; here it is the same screen rendered
+ *      with ?platform=android, so the shipped screen carries no extra control.
  * LG-8 No language toggle (BR-9).
+ * LG-9 The locked-account error state is optional and not part of the positive
+ *      flow, so this screen has no error path.
  */
 export default function LoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [platform, setPlatform] = useState("ios");
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    try {
+      setIsAndroid(
+        new URLSearchParams(window.location.search).get("platform") === "android"
+      );
+    } catch {
+      setIsAndroid(false);
+    }
+  }, []);
 
   const isReady = isValidEmail(email) && password.length > 0;
 
-  /* Typing clears the error, mirroring handleUsernameChange / handlePasswordChange. */
-  const edit = (setter) => (v) => {
-    if (error) setError("");
-    setter(v);
-  };
-
-  const signIn = () => {
+  const go = () => {
     setLoading(true);
-    setTimeout(() => router.push("/home"), 650);
-  };
-
-  const biometric = () => {
-    setLoading(true);
-    setTimeout(() => router.push("/home"), 500);
+    setTimeout(() => router.push("/home"), 600);
   };
 
   return (
@@ -55,11 +57,10 @@ export default function LoginPage() {
           label="Email"
           placeholder="Enter email"
           value={email}
-          onChange={edit(setEmail)}
+          onChange={setEmail}
           type="email"
           inputMode="email"
           autoComplete="username"
-          error={!!error}
         />
 
         <Field
@@ -67,13 +68,10 @@ export default function LoginPage() {
           label="Password"
           placeholder="Enter password"
           value={password}
-          onChange={edit(setPassword)}
+          onChange={setPassword}
           password
           autoComplete="current-password"
-          error={!!error}
         />
-
-        <Message text={error} />
 
         <div className="forgot-row">
           <button
@@ -85,7 +83,7 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <Button disabled={!isReady} loading={loading} onClick={signIn}>
+        <Button disabled={!isReady} loading={loading} onClick={go}>
           Log in
         </Button>
 
@@ -96,28 +94,10 @@ export default function LoginPage() {
           </button>
         </p>
 
-        <button type="button" className="biometric" onClick={biometric}>
-          {platform === "ios" ? <FaceIdIcon /> : <FingerprintIcon />}
-          <span>{platform === "ios" ? "Face ID" : "Biometric"}</span>
+        <button type="button" className="biometric" onClick={go}>
+          {isAndroid ? <FingerprintIcon /> : <FaceIdIcon />}
+          <span>{isAndroid ? "Biometric" : "Face ID"}</span>
         </button>
-
-        {/* LG-5 asks for an Android variant frame; in code it is one switch. */}
-        <div className="platform-toggle" role="group" aria-label="Biometric variant">
-          {["ios", "android"].map((p) => (
-            <button
-              key={p}
-              type="button"
-              className={
-                platform === p
-                  ? "platform-toggle__btn platform-toggle__btn--on"
-                  : "platform-toggle__btn"
-              }
-              onClick={() => setPlatform(p)}
-            >
-              {p === "ios" ? "iOS · Face ID" : "Android · Biometric"}
-            </button>
-          ))}
-        </div>
 
         <Grow />
         <Footer />

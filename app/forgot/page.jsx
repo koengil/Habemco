@@ -32,18 +32,6 @@ export default function ForgotPasswordPage() {
       <TopBar title="Forgot Password" onBack={() => router.push("/login")} />
 
       <Sheet flat>
-        <p
-          style={{
-            margin: "0 0 22px",
-            fontSize: 15,
-            lineHeight: 1.55,
-            color: "var(--text-muted)",
-          }}
-        >
-          Enter the email address on your account and we&apos;ll send you a code to
-          reset your password.
-        </p>
-
         <Field
           id="forgot-email"
           label="Email"

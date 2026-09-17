@@ -15,3 +15,5 @@ next-env.d.ts
 First Native - textured branding background image*/
 FirstNative_Logo_Final*.png
 FirstNative_Logo_White_Final*.png
+
+.vercel

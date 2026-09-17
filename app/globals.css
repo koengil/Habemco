@@ -456,9 +456,10 @@ input {
   opacity: 0.9;
 }
 
+/* BR-4: disabled is light grey with grey text. */
 .btn--default:disabled {
-  background: var(--disabled);
-  color: #fff;
+  background: var(--brand-light-gray);
+  color: var(--disabled);
   cursor: not-allowed;
 }
 
@@ -558,27 +559,6 @@ input {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-}
-
-.platform-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 18px;
-}
-
-.platform-toggle__btn {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: var(--radius-pill);
-  color: var(--text-muted);
-  background: var(--gray-001);
-}
-
-.platform-toggle__btn--on {
-  background: var(--surface-brand-soft);
-  color: var(--link);
 }
 
 /* --- BR-7 footer: Login, the three Register steps, Success only --- */
@@ -764,8 +744,11 @@ input {
 }
 
 /* ===========================================================================
-   Home — F-2 ends here. Intentionally a stub: post-login screens are outside
-   this prototype's scope.
+   Home — PL-1. Where F-2 lands.
+
+   Display-only in this build: the rows are not tap targets, because Card
+   Details, Transaction History and the rest are outside this prototype's
+   scope. Nothing is rendered as interactive unless it actually goes somewhere.
    =========================================================================== */
 
 .home {
@@ -777,7 +760,27 @@ input {
 .home__hero {
   background: var(--surface-header);
   color: #fff;
-  padding: 0 var(--gutter) 28px;
+  padding: 0 var(--gutter) 26px;
+  flex: none;
+}
+
+/* Prototype affordance, not product UI: a way back to the login flow. */
+.home__exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 20px;
+  padding: 8px 14px 8px 10px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.home__exit:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .home__greet {
@@ -811,22 +814,198 @@ input {
   font-variant-numeric: tabular-nums;
 }
 
-.stub {
-  margin: auto;
-  padding: 40px var(--gutter);
+.msgbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 12px 14px;
+  border-radius: var(--radius-field);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.msgbar__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-marigold);
+}
+
+.msgbar__chev {
+  margin-left: auto;
+  opacity: 0.65;
+}
+
+/* quick actions */
+.quick {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 22px var(--gutter) 6px;
+  flex: none;
+}
+
+.quick__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
   text-align: center;
 }
 
-.stub__title {
-  margin: 0 0 10px;
+.quick__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--gray-001);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+}
+
+/* cards */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px var(--gutter) 10px;
+}
+
+.section-head__title {
+  margin: 0;
   font-size: 17px;
   font-weight: 700;
 }
 
-.stub__body {
-  margin: 0 0 22px;
+.section-head__link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--link);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 var(--gutter) 22px;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e8ecf0;
+  border-radius: 12px;
+  background: var(--surface-card);
+}
+
+.card-row__icon {
+  flex: none;
+  width: 38px;
+  height: 30px;
+  border-radius: 5px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+
+.card-row__main {
+  min-width: 0;
+}
+
+.card-row__name {
+  margin: 0;
   font-size: 14px;
-  line-height: 1.6;
+  font-weight: 600;
+}
+
+.card-row__num {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-row__tags {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.chip--active {
+  background: var(--success-surface);
+  color: #05711c;
+}
+
+.chip--shipped {
+  background: var(--surface-brand-soft);
+  color: var(--link);
+}
+
+.chip--suspended {
+  background: var(--error-surface);
+  color: var(--error);
+}
+
+.chip--muted {
+  background: var(--gray-001);
+  color: var(--text-muted);
+}
+
+/* bottom nav (F-8) */
+.tabbar {
+  flex: none;
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #e8ecf0;
+  background: var(--surface-card);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.tabbar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.tabbar__item--on {
+  color: var(--link);
+}
+
+.scope-note {
+  margin: 0 var(--gutter) 18px;
+  padding: 12px 14px;
+  border-radius: var(--radius-field);
+  background: var(--gray-001);
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--text-muted);
 }
 

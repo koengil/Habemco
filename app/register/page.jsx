@@ -23,11 +23,6 @@ export default function RegisterEmailPage() {
 
   const submit = () => {
     setLoading(true);
-    try {
-      sessionStorage.setItem("fn:email", email.trim());
-    } catch {
-      /* private mode — the flow still works, the OTP screen just shows no address */
-    }
     setTimeout(() => router.push("/register/verify"), 550);
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -31,15 +31,6 @@ export default function VerifyEmailPage() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    try {
-      setEmail(sessionStorage.getItem("fn:email") || "");
-    } catch {
-      setEmail("");
-    }
-  }, []);
 
   const digits = code.replace(/\s/g, "");
   const isReady = digits.length === 4;
@@ -60,9 +51,10 @@ export default function VerifyEmailPage() {
 
   return (
     <main className="screen">
+      {/* RG-3 copy, as specified. */}
       <Hero
         title="Verify your email"
-        sub={email ? `Enter the code sent to ${email}` : "Enter the code sent to your email"}
+        sub="Enter the code sent to your email"
         onBack={() => router.push("/register")}
       />
 
