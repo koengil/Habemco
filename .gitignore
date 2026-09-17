@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+build/
+.vercel
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env*
+
+# ENACOMM Confidential source material — inputs to the prototype, not part of it.
+*.docx
+*.pdf
+~$*
+First Native - textured branding background image*/
+FirstNative_Logo_Final*.png
+FirstNative_Logo_White_Final*.png

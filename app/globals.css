@@ -1,0 +1,864 @@
+/* ===========================================================================
+   First Native — login & enrollment prototype
+   Scope: flows F-1 / F-2 / F-3 of
+   Habemco_First_Native_Figma_Prototype_Requirements_v1.3.2
+
+   Token values are lifted from the live white-label app
+   (Emerie/prototype: packages/app/design/tenants/tenant-themes.ts, habemco)
+   so this prototype and the real app resolve to the same colours:
+
+     --primary       hsl(212,71%,13%)   #0A203A   brand navy
+     --secondary     hsl(181,100%,34%)  #00AAAD   brand teal
+     --link          hsl(181,100%,26%)  #008285   AA-safe teal on white (4.63:1)
+     --link-on-dark  hsl(181,100%,34%)  #00AAAD   brand teal on navy (5.81:1)
+
+   The teal is split by surface on purpose: #00AAAD clears AA on navy but only
+   reaches 2.83:1 on white, and darkening it enough for white fails on navy.
+   One value cannot serve both.
+   =========================================================================== */
+
+:root {
+  /* brand ramp — FirstNative_Brand_Guidelines p.8 */
+  --primary: #0a203a;
+  --secondary: #00aaad;
+  --brand-light-gray: #d1d3d4;
+  --brand-pale-aqua: #d4e9eb;
+  --brand-marigold: #efd75d;
+
+  /* carried from the white-label system */
+  --link: #008285;
+  --link-on-dark: #00aaad;
+  --surface-brand-soft: #eafafa;
+  --disabled: #808791;
+  --stroke: #cecbd0;
+  --gray-001: #f7f7f7;
+  --text-muted: #5b6b7c;
+  --text-placeholder: #667584;
+  --success: #009a12;
+  --success-surface: #dcf2e6;
+  --error: #b40000;
+  --error-surface: #ffe2e2;
+
+  /* semantic */
+  --surface-header: var(--primary);
+  --surface-card: #ffffff;
+  --text-primary: var(--primary);
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: var(--brand-pale-aqua);
+
+  /* shape — BR-4 makes primary buttons fully rounded pills */
+  --radius-pill: 999px;
+  --radius-field: 8px;
+  --radius-sheet: 20px;
+  --gutter: 20px;
+  --control-h: 52px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: #05101d;
+  color: var(--text-primary);
+  font-family: var(--font-poppins), "Segoe UI", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ===========================================================================
+   Stage — full-bleed on a handset, framed on a laptop so the link is
+   presentable in a review without anyone resizing a window.
+   =========================================================================== */
+
+.stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.stage__aside {
+  display: none;
+}
+
+.device {
+  width: 100%;
+  height: 100dvh;
+  background: var(--surface-card);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 940px) {
+  .stage {
+    grid-template-columns: minmax(300px, 400px) auto;
+    gap: 72px;
+    justify-content: center;
+    padding: 48px 40px;
+  }
+
+  .stage__aside {
+    display: block;
+    max-width: 400px;
+  }
+
+  .stage__eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--link-on-dark);
+    margin: 0 0 14px;
+  }
+
+  .stage__title {
+    font-size: 30px;
+    line-height: 1.18;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .stage__lede {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #93a5b8;
+    margin: 0 0 26px;
+  }
+
+  .stage__flows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stage__flows li {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #93a5b8;
+  }
+
+  .stage__id {
+    flex: none;
+    width: 34px;
+    font-weight: 700;
+    color: var(--link-on-dark);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stage__note {
+    margin: 26px 0 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #63748a;
+    border-top: 1px solid #1b2a3d;
+    padding-top: 18px;
+  }
+
+  .device {
+    width: 393px;
+    height: 852px;
+    flex: none;
+    border-radius: 44px;
+    border: 10px solid #101f33;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ===========================================================================
+   Screen scaffold
+   =========================================================================== */
+
+.screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.statusbar {
+  flex: none;
+  height: 54px;
+  padding: 0 26px;
+  padding-top: env(safe-area-inset-top, 0px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.statusbar--light {
+  color: var(--text-primary);
+}
+
+/* --- BR-2 textured header: Login, the three Register steps, Success --- */
+
+.hero {
+  flex: none;
+  position: relative;
+  background-color: var(--surface-header);
+  background-image: url("/header-texture.jpg");
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 44px;
+}
+
+.hero__back,
+.bar__btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.hero__back {
+  position: absolute;
+  top: calc(60px + env(safe-area-inset-top, 0px));
+  left: 14px;
+  z-index: 2;
+}
+
+.hero__logo {
+  display: block;
+  width: 150px;
+  height: auto;
+  margin: 30px auto 0;
+}
+
+.hero__title {
+  margin: 20px var(--gutter) 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-on-dark);
+  text-wrap: balance;
+}
+
+.hero__sub {
+  margin: 6px var(--gutter) 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-on-dark-muted);
+}
+
+/* --- BR-2 solid navy bar: Forgot Password screens --- */
+
+.bar {
+  flex: none;
+  background: var(--surface-header);
+  color: var(--text-on-dark);
+}
+
+.bar__row {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  padding: 0 14px 14px;
+}
+
+.bar__title {
+  margin: 0;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* --- white sheet; native uses borderTopRadius 20, px 20, pt 32 --- */
+
+.sheet {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  margin-top: -24px;
+  padding: 32px var(--gutter) 0;
+  position: relative;
+  z-index: 1;
+}
+
+.sheet--flat {
+  border-radius: 0;
+  margin-top: 0;
+  padding-top: 26px;
+}
+
+.grow {
+  flex: 1 1 auto;
+  min-height: 20px;
+}
+
+/* ===========================================================================
+   Fields
+   =========================================================================== */
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 7px;
+}
+
+.field__wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field__input {
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 16px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-field);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font-size: 16px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field__input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(0, 170, 173, 0.15);
+}
+
+.field__input--eye {
+  padding-right: 52px;
+}
+
+.field__input--error {
+  border-color: var(--error);
+  background: var(--error-surface);
+}
+
+/* BR-6: the eye icon takes the placeholder grey, not the link colour. */
+.field__eye {
+  position: absolute;
+  right: 5px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: var(--text-placeholder);
+}
+
+.msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 12px;
+}
+
+.msg--error {
+  color: var(--error);
+}
+
+.msg--alert {
+  color: #9a6b00;
+}
+
+.msg svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* ===========================================================================
+   Buttons
+   default -> bg-primary + white label   (button.tsx `default`)
+   outline -> border-link + text-link    (button.tsx `outline`)
+   ghost   -> text-link, bold            (button.tsx `ghost`)
+   BR-4 overrides the system radius with a full pill.
+   =========================================================================== */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: var(--control-h);
+  border-radius: var(--radius-pill);
+  font-size: 16px;
+  font-weight: 600;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.btn--default {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn--default:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn--default:disabled {
+  background: var(--disabled);
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.btn--outline {
+  background: var(--surface-card);
+  border: 1.5px solid var(--link);
+  color: var(--link);
+}
+
+.btn--outline:hover:not(:disabled) {
+  background: var(--surface-brand-soft);
+}
+
+.btn--ghost {
+  height: auto;
+  min-height: 44px;
+  width: auto;
+  font-weight: 700;
+  color: var(--link);
+}
+
+.btn--ghost:hover {
+  text-decoration: underline;
+}
+
+.btn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===========================================================================
+   Login extras
+   =========================================================================== */
+
+/* LG-2: body text colour, right-aligned, no underline. */
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: -2px 0 16px;
+}
+
+.forgot-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.forgot-link:hover {
+  color: var(--text-primary);
+}
+
+.alt-line {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 18px 0 0;
+}
+
+.link {
+  color: var(--link);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* LG-5: Face ID / Biometric, no underline. */
+.biometric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.platform-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.platform-toggle__btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  background: var(--gray-001);
+}
+
+.platform-toggle__btn--on {
+  background: var(--surface-brand-soft);
+  color: var(--link);
+}
+
+/* --- BR-7 footer: Login, the three Register steps, Success only --- */
+
+.footer {
+  padding: 20px 0 calc(24px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.footer__links {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.footer__links a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.footer__links a:hover {
+  text-decoration: underline;
+}
+
+.footer__sep {
+  color: var(--stroke);
+}
+
+.footer__copy {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
+   Password requirements (RG-5 / FP-5)
+   =========================================================================== */
+
+.reqs {
+  margin: 0 0 14px;
+  padding: 16px;
+  list-style: none;
+  background: var(--gray-001);
+  border-radius: var(--radius-field);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.reqs__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.reqs__item--ok {
+  color: var(--text-primary);
+}
+
+.reqs__icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+}
+
+/* ===========================================================================
+   OTP (RG-3 / FP-4)
+   =========================================================================== */
+
+.otp {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 4px 0 0;
+}
+
+.otp__box {
+  aspect-ratio: 1;
+  max-height: 72px;
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--surface-card);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-field);
+  padding: 0;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.otp__box--filled {
+  border-color: var(--secondary);
+  border-width: 1.5px;
+}
+
+.otp__box--error {
+  border-color: var(--error);
+  border-width: 1.5px;
+  background: var(--error-surface);
+  color: var(--error);
+}
+
+.otp__box:focus {
+  outline: none;
+  border-color: var(--secondary);
+  border-width: 1.5px;
+  box-shadow: 0 0 0 3px rgba(0, 170, 173, 0.15);
+}
+
+.resend {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 18px 0 0;
+  line-height: 1.5;
+}
+
+.resend strong {
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.resend__btn {
+  font-weight: 700;
+  color: var(--link);
+}
+
+.resend__btn:disabled {
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: default;
+}
+
+.resend__btn:not(:disabled):hover {
+  text-decoration: underline;
+}
+
+/* ===========================================================================
+   Success (RG-7 / FP-6)
+   =========================================================================== */
+
+.done {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.done__badge {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 26px;
+  border-radius: 50%;
+  background: var(--success-surface);
+  color: var(--success);
+  display: grid;
+  place-items: center;
+}
+
+.done__title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.done__body {
+  margin: 0 auto;
+  max-width: 300px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
+   Home — F-2 ends here. Intentionally a stub: post-login screens are outside
+   this prototype's scope.
+   =========================================================================== */
+
+.home {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.home__hero {
+  background: var(--surface-header);
+  color: #fff;
+  padding: 0 var(--gutter) 28px;
+}
+
+.home__greet {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-on-dark-muted);
+}
+
+.home__name {
+  margin: 2px 0 22px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.home__balances {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.home__label {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--text-on-dark-muted);
+}
+
+.home__value {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.stub {
+  margin: auto;
+  padding: 40px var(--gutter);
+  text-align: center;
+}
+
+.stub__title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stub__body {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
+   Toast
+   =========================================================================== */
+
+.toast {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-field);
+  background: var(--success);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  animation: toast-in 0.26s ease;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
