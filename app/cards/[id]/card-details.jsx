@@ -5,14 +5,17 @@ import { useEffect, useState } from "react";
 
 import { STATUS_LABEL, useCards } from "../../../components/CardsProvider";
 import {
+  BigCheck,
   ChevronRight,
+  FreezeIcon,
+  MailIcon,
+  PhoneIcon,
   PinIcon,
   StatusDotIcon,
   SwapIcon,
   TickOn,
   UnlockIcon,
   WalletIcon,
-  FreezeIcon,
 } from "../../../components/icons";
 import {
   Button,
@@ -23,8 +26,11 @@ import {
   TopBar,
 } from "../../../components/ui";
 
+/** The code the prototype accepts, matching the Register and Forgot flows. */
+const VALID_CODE = "7336";
+
 /**
- * Card Details, and the two card flows.
+ * Card Details, and the card flows.
  *
  * Row sets follow `cardDetailsPresetsCardOnly` in the live app:
  *   Active    → status, managePin, addToApplePayOrGooglePlay, suspendLostStolen, replaceCard
@@ -55,13 +61,27 @@ export default function CardDetails({ id }) {
   const { getCard, setStatus } = useCards();
   const card = getCard(id);
 
-  /* 'closed' | 'cvv' | 'setPin' | 'confirmPin' | 'unlock' — the live app's steps. */
+  /*
+   * Steps mirror the live app's two flows:
+   *   activation  cvv -> setPin -> confirmPin            (use-card-activation-flow.ts)
+   *   manage pin  pinMethod -> pinCode -> pinNew -> pinConfirm -> pinDone
+   *                                                      (use-manage-pin-flow.ts)
+   * plus 'unlock' for F-5's confirmation sheet.
+   */
   const [step, setStep] = useState("closed");
   const [cvv, setCvv] = useState("");
   const [pin, setPin] = useState("");
   const [confirm, setConfirm] = useState("");
   const [pinError, setPinError] = useState("");
+  const [code, setCode] = useState("");
+  const [codeError, setCodeError] = useState("");
+  const [pinChannel, setPinChannel] = useState("email");
   const [toast, setToast] = useState("");
+
+  const onCodeChange = (v) => {
+    if (codeError) setCodeError("");
+    setCode(v);
+  };
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -95,6 +115,8 @@ export default function CardDetails({ id }) {
     setPin("");
     setConfirm("");
     setPinError("");
+    setCode("");
+    setCodeError("");
   };
 
   const finishActivation = () => {
@@ -120,7 +142,13 @@ export default function CardDetails({ id }) {
   });
 
   if (card.status === "active") {
-    rows.push({ key: "pin", icon: <PinIcon />, label: "Manage pin" });
+    /* F-7 Card Management: the Manage pin path. */
+    rows.push({
+      key: "pin",
+      icon: <PinIcon />,
+      label: "Manage pin",
+      onClick: () => setStep("pinMethod"),
+    });
     /* PL-4: renamed from "Add to Apple Pay". */
     rows.push({ key: "wallet", icon: <WalletIcon />, label: "Add to mobile wallet" });
     rows.push({
@@ -311,7 +339,7 @@ export default function CardDetails({ id }) {
       {step === "unlock" ? (
         <Sheet_Bottom
           title="Unlock Card"
-          sub="This card will be unlocked and can be used again straight away."
+          sub="You can use it normally afterwards."
           onDismiss={closeFlow}
         >
           <div className="btn-stack">
@@ -319,6 +347,173 @@ export default function CardDetails({ id }) {
             <Button variant="outline" onClick={closeFlow}>
               Cancel
             </Button>
+          </div>
+        </Sheet_Bottom>
+      ) : null}
+
+      {/* ---------------- F-7: Card Management — Manage pin ---------------- */}
+
+      {step === "pinMethod" ? (
+        <Sheet_Bottom title="Select how to update your PIN:" onDismiss={closeFlow}>
+          <div className="method-list">
+            <button
+              type="button"
+              className="method"
+              onClick={() => {
+                setPinChannel("email");
+                setStep("pinCode");
+              }}
+            >
+              <span className="method__icon">
+                <MailIcon />
+              </span>
+              <span className="method__main">
+                <span className="method__label">via Email</span>
+                <span className="method__value">jane.doe@email.com</span>
+              </span>
+              <ChevronRight />
+            </button>
+            <button
+              type="button"
+              className="method"
+              onClick={() => {
+                setPinChannel("phone");
+                setStep("pinCode");
+              }}
+            >
+              <span className="method__icon">
+                <PhoneIcon />
+              </span>
+              <span className="method__main">
+                <span className="method__label">via Phone number</span>
+                <span className="method__value">(•••) ••• 4417</span>
+              </span>
+              <ChevronRight />
+            </button>
+          </div>
+          <div className="overlay__actions">
+            <Button variant="outline" onClick={closeFlow}>
+              Cancel
+            </Button>
+          </div>
+        </Sheet_Bottom>
+      ) : null}
+
+      {step === "pinCode" ? (
+        <Sheet_Bottom
+          title="Enter the code"
+          sub={
+            pinChannel === "phone"
+              ? "A code has been sent to your phone. Enter it below."
+              : "A code has been sent to your email. Enter it below."
+          }
+          onDismiss={closeFlow}
+        >
+          <OtpInput value={code} onChange={onCodeChange} error={!!codeError} />
+          <div style={{ marginTop: 14 }}>
+            <Message text={codeError} />
+          </div>
+          <div className="overlay__actions btn-stack">
+            <Button
+              disabled={code.replace(/\s/g, "").length !== 4}
+              onClick={() => {
+                if (code.replace(/\s/g, "") !== VALID_CODE) {
+                  setCodeError("Invalid code. Please try again.");
+                  return;
+                }
+                setStep("pinNew");
+              }}
+            >
+              Continue
+            </Button>
+            <Button variant="outline" onClick={closeFlow}>
+              Cancel
+            </Button>
+          </div>
+        </Sheet_Bottom>
+      ) : null}
+
+      {step === "pinNew" ? (
+        <Sheet_Bottom
+          title="New PIN"
+          sub="Now enter your new PIN."
+          onDismiss={closeFlow}
+        >
+          <OtpInput value={pin} onChange={setPin} length={4} mask />
+          <div className="overlay__actions btn-stack">
+            <Button
+              disabled={pin.replace(/\s/g, "").length !== 4}
+              onClick={() => {
+                setPinError("");
+                setStep("pinConfirm");
+              }}
+            >
+              Continue
+            </Button>
+            <Button variant="outline" onClick={closeFlow}>
+              Cancel
+            </Button>
+          </div>
+        </Sheet_Bottom>
+      ) : null}
+
+      {step === "pinConfirm" ? (
+        <Sheet_Bottom
+          title="Confirm the new PIN"
+          sub="Re-enter the PIN to confirm."
+          onDismiss={closeFlow}
+        >
+          <OtpInput
+            value={confirm}
+            onChange={(v) => {
+              if (pinError) setPinError("");
+              setConfirm(v);
+            }}
+            length={4}
+            mask
+            error={!!pinError}
+          />
+          <div style={{ marginTop: 14 }}>
+            <Message text={pinError} />
+          </div>
+          <div className="overlay__actions btn-stack">
+            <Button
+              disabled={confirm.replace(/\s/g, "").length !== 4}
+              onClick={() => {
+                if (confirm.replace(/\s/g, "") !== pin.replace(/\s/g, "")) {
+                  setPinError("The PINs do not match. Please try again.");
+                  return;
+                }
+                setStep("pinDone");
+              }}
+            >
+              Confirm
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setConfirm("");
+                setPinError("");
+                setStep("pinNew");
+              }}
+            >
+              Back
+            </Button>
+          </div>
+        </Sheet_Bottom>
+      ) : null}
+
+      {step === "pinDone" ? (
+        <Sheet_Bottom onDismiss={closeFlow}>
+          <div className="done" style={{ paddingTop: 8 }}>
+            <div className="done__badge">
+              <BigCheck />
+            </div>
+            <h2 className="done__title">All done!</h2>
+            <p className="done__body">PIN successfully updated.</p>
+          </div>
+          <div className="overlay__actions">
+            <Button onClick={closeFlow}>Back to Card Details</Button>
           </div>
         </Sheet_Bottom>
       ) : null}

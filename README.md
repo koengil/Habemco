@@ -14,6 +14,11 @@ and flows F-1, F-2 and F-3. Post-login screens are out of scope.
 | **F-1 Register** | `/login` → `/register` → `/register/verify` → `/register/password` → `/register/success` → `/login` |
 | **F-2 Login** | `/login` → `/home` (credentials, or Face ID / Biometric) |
 | **F-3 Forgot Password** | `/login` → `/forgot` → `/forgot/code` → `/forgot/password` → `/forgot/done` → `/login` |
+| **F-4 Activate Card** | `/home` → Shipped card → Activate Now → CVV → Set a PIN → Confirm PIN → "Card activated!" |
+| **F-5 Unblock Card** | `/home` → Suspended card → Unblock Card → Unlock Card sheet → Active |
+| **F-6 Transaction History** | `/home` → Transactions → `/transactions` → row → `/transactions/[id]` |
+| **F-7 Card Management** | `/home` → Active card → Manage pin → method → code → new PIN → confirm → All done |
+| **F-8 Bottom navigation** | Home / FAQ / Profile from any post-login screen; Profile → Edit Password → All done → Go to Home |
 
 The emailed passcode is **7336**. Any syntactically valid email works. Nothing
 talks to a backend; every value is a placeholder.

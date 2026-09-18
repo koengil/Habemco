@@ -28,6 +28,9 @@ const FLOWS = [
   ["F-3", "Forgot Password — email, code, new password, all done"],
   ["F-4", "Activate Card — CVV, set PIN, confirm PIN, activated"],
   ["F-5", "Unblock Card — unlock confirmation, card active"],
+  ["F-6", "Transaction History — list, row, details"],
+  ["F-7", "Card Management — manage pin: method, code, new PIN, confirm"],
+  ["F-8", "Bottom navigation — Home, FAQ, Profile, edit password"],
 ];
 
 export default function RootLayout({ children }) {

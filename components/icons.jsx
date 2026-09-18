@@ -236,6 +236,44 @@ export function UnlockIcon({ size = 22 }) {
   );
 }
 
+export function SupportIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M4 13a8 8 0 0 1 16 0" />
+      <rect x="2.5" y="13" width="4" height="6" rx="1.6" />
+      <rect x="17.5" y="13" width="4" height="6" rx="1.6" />
+      <path d="M20 19v.6a2.4 2.4 0 0 1-2.4 2.4H13" />
+    </svg>
+  );
+}
+
+export function MailIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="3" y="5.5" width="18" height="13" rx="2.4" />
+      <path d="m3.8 7 8.2 6 8.2-6" />
+    </svg>
+  );
+}
+
+export function PhoneIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.6" />
+      <path d="M10.5 18.5h3" />
+    </svg>
+  );
+}
+
+export function BellIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M6 10a6 6 0 0 1 12 0c0 3.5 1 5 1.6 5.8H4.4C5 15 6 13.5 6 10Z" />
+      <path d="M10 19a2 2 0 0 0 4 0" />
+    </svg>
+  );
+}
+
 export function StatusIcons() {
   return (
     <svg width="72" height="14" viewBox="0 0 72 14" fill="none" aria-hidden="true">

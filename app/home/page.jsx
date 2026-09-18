@@ -7,15 +7,12 @@ import {
   ArrowLeft,
   CardIcon,
   ChevronRight,
-  HelpIcon,
-  HomeIcon,
   MoreIcon,
   RecipientsIcon,
   TransactionsIcon,
   TransfersIcon,
-  UserIcon,
 } from "../../components/icons";
-import { StatusBar } from "../../components/ui";
+import { StatusBar, TabBar } from "../../components/ui";
 
 /**
  * Home — PL-1. Where F-2 lands, and where F-4 and F-5 start.
@@ -31,8 +28,9 @@ import { StatusBar } from "../../components/ui";
  * prototype's scope, so they are not drawn as something that leads anywhere.
  */
 
+/* Transactions opens F-6; the rest are outside this prototype's scope. */
 const QUICK = [
-  { label: "Transactions", Icon: TransactionsIcon },
+  { label: "Transactions", Icon: TransactionsIcon, href: "/transactions" },
   { label: "Transfers", Icon: TransfersIcon },
   { label: "Recipients", Icon: RecipientsIcon },
   { label: "More", Icon: MoreIcon },
@@ -82,14 +80,28 @@ export default function HomePage() {
         </header>
 
         <div className="quick">
-          {QUICK.map(({ label, Icon }) => (
-            <div key={label} className="quick__item">
-              <span className="quick__icon">
-                <Icon />
-              </span>
-              <span>{label}</span>
-            </div>
-          ))}
+          {QUICK.map(({ label, Icon, href }) =>
+            href ? (
+              <button
+                key={label}
+                type="button"
+                className="quick__item"
+                onClick={() => router.push(href)}
+              >
+                <span className="quick__icon">
+                  <Icon />
+                </span>
+                <span>{label}</span>
+              </button>
+            ) : (
+              <div key={label} className="quick__item">
+                <span className="quick__icon">
+                  <Icon />
+                </span>
+                <span>{label}</span>
+              </div>
+            )
+          )}
         </div>
 
         <div className="section-head">
@@ -125,25 +137,13 @@ export default function HomePage() {
         </div>
 
         <p className="scope-note">
-          Transaction History, Transfers and Recipients are outside this
-          prototype&apos;s scope. Tap a card to open Card Details — the Shipped
-          card runs Activate Card, the Suspended card runs Unblock Card.
+          Tap a card to open Card Details — the Shipped card runs Activate Card,
+          the Suspended card runs Unblock Card, and the Active card has the
+          Manage pin path. Transfers and Recipients are outside this
+          prototype&apos;s scope.
         </p>
 
-        <nav className="tabbar">
-          <span className="tabbar__item tabbar__item--on">
-            <HomeIcon />
-            <span>Home</span>
-          </span>
-          <span className="tabbar__item">
-            <HelpIcon />
-            <span>FAQ</span>
-          </span>
-          <span className="tabbar__item">
-            <UserIcon />
-            <span>Profile</span>
-          </span>
-        </nav>
+        <TabBar active="home" />
       </div>
     </main>
   );

@@ -1,14 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   AlertIcon,
   ChevronLeft,
   Eye,
   HelpIcon,
+  HomeIcon,
   StatusIcons,
   TickOff,
   TickOn,
+  UserIcon,
 } from "./icons";
 
 /* ---------------------------------------------------------------- chrome --- */
@@ -42,8 +45,12 @@ export function Hero({ title, sub, onBack }) {
   );
 }
 
-/** BR-2 solid navy bar — the Forgot Password screens carry no footer. */
-export function TopBar({ title, onBack }) {
+/**
+ * BR-2 solid navy bar — Forgot Password and every post-login screen.
+ * `right` replaces the default help icon; PL-2 puts Contact Support there on
+ * Transaction History.
+ */
+export function TopBar({ title, onBack, right }) {
   return (
     <header className="bar">
       <StatusBar />
@@ -56,11 +63,42 @@ export function TopBar({ title, onBack }) {
           <span />
         )}
         <h1 className="bar__title">{title}</h1>
-        <button type="button" className="bar__btn" aria-label="Help">
-          <HelpIcon />
-        </button>
+        {right ?? (
+          <button type="button" className="bar__btn" aria-label="Help">
+            <HelpIcon />
+          </button>
+        )}
       </div>
     </header>
+  );
+}
+
+/**
+ * F-8: Home, FAQ and Profile navigate between their screens from any
+ * post-login screen.
+ */
+export function TabBar({ active }) {
+  const router = useRouter();
+  const items = [
+    { key: "home", label: "Home", href: "/home", Icon: HomeIcon },
+    { key: "faq", label: "FAQ", href: "/faq", Icon: HelpIcon },
+    { key: "profile", label: "Profile", href: "/profile", Icon: UserIcon },
+  ];
+  return (
+    <nav className="tabbar">
+      {items.map(({ key, label, href, Icon }) => (
+        <button
+          key={key}
+          type="button"
+          className={active === key ? "tabbar__item tabbar__item--on" : "tabbar__item"}
+          onClick={() => router.push(href)}
+          aria-current={active === key ? "page" : undefined}
+        >
+          <Icon />
+          <span>{label}</span>
+        </button>
+      ))}
+    </nav>
   );
 }
 

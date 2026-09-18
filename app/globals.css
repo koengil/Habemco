@@ -1291,6 +1291,253 @@ button.row:hover {
 }
 
 /* ===========================================================================
+   Transaction History / Details — F-6 (PL-2, PL-3)
+   =========================================================================== */
+
+.txn-tools {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  padding: 16px var(--gutter) 4px;
+}
+
+/* PL-2: muted so it does not read as a primary action. */
+.txn-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.txn-filter:hover {
+  background: var(--gray-001);
+}
+
+.txn-list {
+  flex: 1 1 auto;
+}
+
+.txn-group {
+  margin: 0;
+  padding: 18px var(--gutter) 8px;
+  font-size: 12px
+  ;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* PL-2: the whole row is the tap target; no three-dot menu. */
+.txn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 14px var(--gutter);
+  border-bottom: 1px solid #edf1f4;
+  background: var(--surface-card);
+  text-align: left;
+}
+
+.txn:hover {
+  background: var(--gray-001);
+}
+
+.txn__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.txn__name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.txn__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.txn__pending {
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--gray-001);
+  font-weight: 600;
+}
+
+.txn__amt {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.txn__amt--in {
+  color: var(--success);
+}
+
+.txn__chev {
+  display: flex;
+  flex: none;
+  color: var(--text-muted);
+}
+
+.detail-hero {
+  flex: none;
+  padding: 30px var(--gutter) 22px;
+  text-align: center;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.detail-hero__amt {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-hero__amt--in {
+  color: var(--success);
+}
+
+.detail-hero__name {
+  margin: 6px 0 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.dl {
+  margin: 0;
+  padding: 4px var(--gutter) 0;
+  flex: 1 1 auto;
+}
+
+.dl__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf1f4;
+  font-size: 14px;
+}
+
+.dl__key {
+  color: var(--text-muted);
+}
+
+.dl__val {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.detail-actions {
+  flex: none;
+  padding: 20px var(--gutter);
+}
+
+/* ===========================================================================
+   Profile — PL-9
+   =========================================================================== */
+
+.profile-head {
+  flex: none;
+  padding: 26px var(--gutter) 22px;
+  text-align: center;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--surface-brand-soft);
+  color: var(--link);
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.profile-email {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
+   Manage pin — method chooser (F-7)
+   =========================================================================== */
+
+.method-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.method {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 14px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-field);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.method:hover {
+  border-color: var(--secondary);
+}
+
+.method__icon {
+  flex: none;
+  color: var(--primary);
+  display: flex;
+}
+
+.method__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.method__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.method__value {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
    Toast
    =========================================================================== */
 
