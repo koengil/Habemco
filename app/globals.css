@@ -1617,10 +1617,17 @@ button.row:hover {
   display: flex;
 }
 
+/* Grows so the chevron is pushed to the card's right edge. */
 .method__main {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-width: 0;
+}
+
+.method > svg {
+  flex: none;
+  margin-left: auto;
 }
 
 .method__label {
