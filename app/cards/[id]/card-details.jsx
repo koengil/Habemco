@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { STATUS_LABEL, useCards } from "../../../components/CardsProvider";
 import {
   BigCheck,
+  CheckOnFill,
   ChevronRight,
   FreezeIcon,
   MailIcon,
@@ -13,7 +14,6 @@ import {
   PinIcon,
   StatusDotIcon,
   SwapIcon,
-  TickOn,
   UnlockIcon,
   WalletIcon,
 } from "../../../components/icons";
@@ -520,7 +520,7 @@ export default function CardDetails({ id }) {
 
       {toast ? (
         <Toast>
-          <TickOn size={18} />
+          <CheckOnFill size={18} />
           {toast}
         </Toast>
       ) : null}

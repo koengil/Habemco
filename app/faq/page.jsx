@@ -32,11 +32,6 @@ export default function FaqPage() {
         ))}
       </div>
 
-      <p className="scope-note">
-        FAQ content is outside this prototype&apos;s scope — the topics above are
-        placeholders so the tab has somewhere to land.
-      </p>
-
       <TabBar active="faq" />
     </main>
   );

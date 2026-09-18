@@ -638,9 +638,10 @@ input {
    OTP (RG-3 / FP-4)
    =========================================================================== */
 
+/* Centred so a 3-box CVV entry sits centre-stage like the 4-box code entry. */
 .otp {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  justify-content: center;
   gap: 12px;
   margin: 4px 0 0;
 }
@@ -648,7 +649,9 @@ input {
 .otp__box {
   aspect-ratio: 1;
   max-height: 72px;
-  width: 100%;
+  width: 72px;
+  flex: 0 1 72px;
+  min-width: 0;
   text-align: center;
   font-size: 26px;
   font-weight: 600;
@@ -982,10 +985,13 @@ input {
   color: var(--error);
 }
 
-/* bottom nav (F-8) */
+/* bottom nav (F-8) — pinned to the bottom; the page scrolls behind it */
 .tabbar {
   flex: none;
   margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid #e8ecf0;
@@ -1006,16 +1012,6 @@ input {
 
 .tabbar__item--on {
   color: var(--link);
-}
-
-.scope-note {
-  margin: 0 var(--gutter) 18px;
-  padding: 12px 14px;
-  border-radius: var(--radius-field);
-  background: var(--gray-001);
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--text-muted);
 }
 
 /* ===========================================================================
@@ -1294,30 +1290,132 @@ button.row:hover {
    Transaction History / Details — F-6 (PL-2, PL-3)
    =========================================================================== */
 
+/* Navy balances block at the top of Transaction History, as the live screen. */
+.txn-head {
+  flex: none;
+  background: var(--surface-header);
+  color: #fff;
+  padding: 0 var(--gutter) 22px;
+  border-radius: 0 0 10px 10px;
+}
+
+.txn-head__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.txn-head__balances {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.txn-head__label {
+  margin: 0 0 2px;
+  font-size: 12px;
+  color: var(--text-on-dark-muted);
+}
+
+.txn-head__value {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.txn-head__dd {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  min-height: 44px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Title row + filter, then the search field — the live SearchAndFilter. */
 .txn-tools {
   flex: none;
   display: flex;
-  gap: 10px;
-  padding: 16px var(--gutter) 4px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px var(--gutter) 4px;
 }
 
-/* PL-2: muted so it does not read as a primary action. */
+.txn-tools__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.txn-tools__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/*
+ * Same anatomy as the live ButtonFilter — label plus filter icon, underlined —
+ * but PL-2 asks for the colour to be muted so it does not read as a primary
+ * action, so it takes the muted text colour rather than the link teal.
+ */
 .txn-filter {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
-  padding: 8px 18px;
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-pill);
-  background: var(--surface-card);
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .txn-filter:hover {
-  background: var(--gray-001);
+  color: var(--text-primary);
+}
+
+.txn-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-field);
+  background: var(--surface-card);
+  color: var(--disabled);
+}
+
+.txn-search:focus-within {
+  border-color: var(--secondary);
+}
+
+.txn-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.txn-search input::placeholder {
+  color: var(--disabled);
+}
+
+.txn-empty {
+  padding: 40px var(--gutter);
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
 .txn-list {

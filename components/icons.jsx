@@ -236,6 +236,53 @@ export function UnlockIcon({ size = 22 }) {
   );
 }
 
+/**
+ * Check for use on a coloured surface: a solid white disc with the tick cut in
+ * the surface colour. TickOn draws a white tick on a currentColor disc, which
+ * disappears on the green toast where currentColor is already white.
+ */
+export function CheckOnFill({ size = 18, fill = "#009A12" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="8" fill="#fff" />
+      <path
+        d="M4.9 8.2 6.9 10.2 11.1 6"
+        fill="none"
+        stroke={fill}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function SearchIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4 4" />
+    </svg>
+  );
+}
+
+export function FilterIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M3.5 6h17M6.5 12h11M10 18h4" />
+    </svg>
+  );
+}
+
+export function DepositIcon({ size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M12 4v11m0 0 4-4m-4 4-4-4" />
+      <path d="M4 18.5h16" />
+    </svg>
+  );
+}
+
 export function SupportIcon({ size = 22 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">

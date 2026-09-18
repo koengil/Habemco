@@ -136,13 +136,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        <p className="scope-note">
-          Tap a card to open Card Details — the Shipped card runs Activate Card,
-          the Suspended card runs Unblock Card, and the Active card has the
-          Manage pin path. Transfers and Recipients are outside this
-          prototype&apos;s scope.
-        </p>
-
         <TabBar active="home" />
       </div>
     </main>

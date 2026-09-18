@@ -74,12 +74,6 @@ export default function ProfilePage() {
         )}
       </div>
 
-      <p className="scope-note">
-        Only Edit Password is wired — it is the path F-8 calls for. Manage
-        Profile, Notification Preferences and Contact Support are outside this
-        prototype&apos;s scope.
-      </p>
-
       <TabBar active="profile" />
     </main>
   );
