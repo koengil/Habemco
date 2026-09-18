@@ -166,7 +166,13 @@ export default function CardDetails({ id }) {
             <span>Expiry date</span>
             <strong>{displayed.expiry}</strong>
           </div>
-          <p className="cardart__holder">{displayed.holder}</p>
+          <div className="cardart__foot">
+            <p className="cardart__holder">{displayed.holder}</p>
+            {/* Habemco's Mastercard asset, matching the mark baked into the
+                exported card art so rendered and exported cards agree. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="cardart__scheme" src="/Mastercard.png" alt="Mastercard" />
+          </div>
         </div>
       )}
 

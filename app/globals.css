@@ -1105,10 +1105,24 @@ input {
   color: rgba(255, 255, 255, 0.72);
 }
 
+.cardart__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+}
+
 .cardart__holder {
-  margin: 14px 0 0;
+  margin: 0;
   font-size: 13px;
   font-weight: 600;
+}
+
+.cardart__scheme {
+  flex: none;
+  width: 46px;
+  height: auto;
 }
 
 /* PL-5: the "Got your card? Activate Now!" prompt, tied to the physical card. */
