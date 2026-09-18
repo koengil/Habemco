@@ -45,7 +45,6 @@ const INITIAL = [
     cvv: "884",
     expiry: "03/29",
     holder: "Jane Doe",
-    instantIssue: true,
   },
   {
     id: "physical-2",

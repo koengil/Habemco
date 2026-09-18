@@ -982,11 +982,6 @@ input {
   color: var(--error);
 }
 
-.chip--muted {
-  background: var(--gray-001);
-  color: var(--text-muted);
-}
-
 /* bottom nav (F-8) */
 .tabbar {
   flex: none;

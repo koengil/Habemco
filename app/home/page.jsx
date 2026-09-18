@@ -113,9 +113,6 @@ export default function HomePage() {
                 <span className="card-row__num">•••• {c.last4}</span>
               </span>
               <span className="card-row__tags">
-                {c.instantIssue ? (
-                  <span className="chip chip--muted">Instant Issue</span>
-                ) : null}
                 <span className={`chip chip--${c.status}`}>
                   {STATUS_LABEL[c.status]}
                 </span>
