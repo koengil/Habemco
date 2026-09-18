@@ -182,6 +182,60 @@ export function CardIcon({ size = 18 }) {
   );
 }
 
+export function StatusDotIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Z" />
+      <path d="M12 7.5v5" />
+      <path d="M12 16.2h.01" strokeWidth="2.2" />
+    </svg>
+  );
+}
+
+export function PinIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="4" y="10" width="16" height="10" rx="2.4" />
+      <path d="M8 10V7.5a4 4 0 0 1 8 0V10" />
+    </svg>
+  );
+}
+
+export function WalletIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="3" y="6" width="18" height="13" rx="2.6" />
+      <path d="M16 12.5h2.5" />
+      <path d="M3 10h18" />
+    </svg>
+  );
+}
+
+export function FreezeIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9" />
+    </svg>
+  );
+}
+
+export function SwapIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <path d="M4 9h12l-3-3M20 15H8l3 3" />
+    </svg>
+  );
+}
+
+export function UnlockIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true">
+      <rect x="4" y="10.5" width="16" height="9.5" rx="2.4" />
+      <path d="M8 10.5V7.5a4 4 0 0 1 7.6-1.7" />
+    </svg>
+  );
+}
+
 export function StatusIcons() {
   return (
     <svg width="72" height="14" viewBox="0 0 72 14" fill="none" aria-hidden="true">

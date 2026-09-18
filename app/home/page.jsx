@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import { STATUS_LABEL, useCards } from "../../components/CardsProvider";
 import {
   ArrowLeft,
   CardIcon,
@@ -17,20 +18,17 @@ import {
 import { StatusBar } from "../../components/ui";
 
 /**
- * Home — PL-1. Where F-2 lands after a successful login.
+ * Home — PL-1. Where F-2 lands, and where F-4 and F-5 start.
  *
- * Copy comes from the live app's locale files (common.json / debitCard.json):
- * "Good Morning", "Current Balance", "Available Balance", "Important Messages",
- * "Transactions", "Recipients", "More", "Cards", "Direct Deposit Info",
- * "Instant Issue", "Active" / "Shipped" / "Suspended".
+ * Copy comes from the live locale files (common.json / debitCard.json).
+ * PL-1 requires one card in each status the card flows need, so the list shows
+ * Shipped (Physical), Active (Virtual) and Suspended (Physical) and both card
+ * flows begin from this one screen. The cardholder name is the neutral
+ * placeholder OQ-2 asks for.
  *
- * PL-1 asks for one card in each status the card flows need, so the list shows
- * Shipped (Physical), Active (Virtual) and Suspended (Physical). The cardholder
- * name is the neutral placeholder required by OQ-2.
- *
- * Rows and quick actions are display-only here: Card Details, Activate Card,
- * Unblock Card and Transaction History are outside this prototype's scope, so
- * nothing is drawn as a tap target that would lead nowhere.
+ * The card rows are real tap targets into Card Details. The quick actions are
+ * not: Transactions, Transfers, Recipients and More are outside this
+ * prototype's scope, so they are not drawn as something that leads anywhere.
  */
 
 const QUICK = [
@@ -40,20 +38,9 @@ const QUICK = [
   { label: "More", Icon: MoreIcon },
 ];
 
-const CARDS = [
-  { kind: "Physical Card", last4: "8765", status: "shipped", label: "Shipped" },
-  {
-    kind: "Virtual Card",
-    last4: "4402",
-    status: "active",
-    label: "Active",
-    tag: "Instant Issue",
-  },
-  { kind: "Physical Card", last4: "9930", status: "suspended", label: "Suspended" },
-];
-
 export default function HomePage() {
   const router = useRouter();
+  const { cards } = useCards();
 
   return (
     <main className="screen">
@@ -61,7 +48,7 @@ export default function HomePage() {
         <header className="home__hero">
           <StatusBar />
 
-          {/* Prototype control, not part of the product UI. */}
+          {/* Prototype control, not product UI. */}
           <button
             type="button"
             className="home__exit"
@@ -111,26 +98,39 @@ export default function HomePage() {
         </div>
 
         <div className="cards">
-          {CARDS.map((c) => (
-            <div key={c.last4} className="card-row">
+          {cards.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              className="card-row card-row--tap"
+              onClick={() => router.push(`/cards/${c.id}`)}
+            >
               <span className="card-row__icon">
                 <CardIcon />
               </span>
-              <div className="card-row__main">
-                <p className="card-row__name">{c.kind}</p>
-                <p className="card-row__num">•••• {c.last4}</p>
-              </div>
-              <span className="card-row__tags">
-                {c.tag ? <span className="chip chip--muted">{c.tag}</span> : null}
-                <span className={`chip chip--${c.status}`}>{c.label}</span>
+              <span className="card-row__main">
+                <span className="card-row__name">{c.kind}</span>
+                <span className="card-row__num">•••• {c.last4}</span>
               </span>
-            </div>
+              <span className="card-row__tags">
+                {c.instantIssue ? (
+                  <span className="chip chip--muted">Instant Issue</span>
+                ) : null}
+                <span className={`chip chip--${c.status}`}>
+                  {STATUS_LABEL[c.status]}
+                </span>
+                <span className="card-row__chev">
+                  <ChevronRight />
+                </span>
+              </span>
+            </button>
           ))}
         </div>
 
         <p className="scope-note">
-          Card Details, Activate Card, Unblock Card and Transaction History are
-          outside this prototype&apos;s scope, so the rows above are display-only.
+          Transaction History, Transfers and Recipients are outside this
+          prototype&apos;s scope. Tap a card to open Card Details — the Shipped
+          card runs Activate Card, the Suspended card runs Unblock Card.
         </p>
 
         <nav className="tabbar">

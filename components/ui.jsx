@@ -206,7 +206,7 @@ export function PasswordRules({ rules }) {
  * Four-box code entry. Auto-advances on input, steps back on Backspace, and
  * accepts a pasted code — the behaviours the native otp-input provides.
  */
-export function OtpInput({ value, onChange, error = false, length = 4 }) {
+export function OtpInput({ value, onChange, error = false, length = 4, mask = false }) {
   const refs = useRef([]);
 
   const setDigit = (i, raw) => {
@@ -257,9 +257,9 @@ export function OtpInput({ value, onChange, error = false, length = 4 }) {
             id={`otp-${i}`}
             ref={(el) => (refs.current[i] = el)}
             className={cls}
-            value={ch}
+            value={mask && ch ? "•" : ch}
             inputMode="numeric"
-            autoComplete="one-time-code"
+            autoComplete={mask ? "off" : "one-time-code"}
             maxLength={length}
             aria-label={`Digit ${i + 1}`}
             onChange={(e) => setDigit(i, e.target.value)}
@@ -312,6 +312,30 @@ export function Toast({ children }) {
   return (
     <div className="toast" role="status">
       {children}
+    </div>
+  );
+}
+
+/**
+ * Bottom sheet. The live app runs card activation and the unlock confirmation
+ * as sheets over Card Details rather than as pushed screens, so the prototype
+ * does the same.
+ */
+export function Sheet_Bottom({ title, sub, children, onDismiss, labelledBy }) {
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={labelledBy || title}>
+      <button
+        type="button"
+        className="overlay__scrim"
+        aria-label="Close"
+        onClick={onDismiss}
+      />
+      <div className="overlay__sheet">
+        <span className="overlay__grip" />
+        {title ? <h2 className="overlay__title">{title}</h2> : null}
+        {sub ? <p className="overlay__sub">{sub}</p> : null}
+        {children}
+      </div>
     </div>
   );
 }

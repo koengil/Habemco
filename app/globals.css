@@ -902,10 +902,18 @@ input {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-height: 44px;
   padding: 14px;
   border: 1px solid #e8ecf0;
   border-radius: 12px;
   background: var(--surface-card);
+  text-align: left;
+  transition: border-color 0.15s ease;
+}
+
+.card-row--tap:hover {
+  border-color: var(--secondary);
 }
 
 .card-row__icon {
@@ -921,19 +929,25 @@ input {
 
 .card-row__main {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-row__name {
-  margin: 0;
   font-size: 14px;
   font-weight: 600;
 }
 
 .card-row__num {
-  margin: 2px 0 0;
+  margin-top: 2px;
   font-size: 12px;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+.card-row__chev {
+  display: flex;
+  color: var(--text-muted);
 }
 
 .card-row__tags {
@@ -1007,6 +1021,264 @@ input {
   font-size: 12px;
   line-height: 1.55;
   color: var(--text-muted);
+}
+
+/* ===========================================================================
+   Card details — F-4 / F-5 (PL-4, PL-5, PL-7)
+   =========================================================================== */
+
+.cardart {
+  margin: 18px var(--gutter) 0;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0a203a 0%, #14375c 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Habemco's exported card art, used where its baked-in values match the card. */
+.cardart--image {
+  display: block;
+  width: calc(100% - (var(--gutter) * 2));
+  height: auto;
+  aspect-ratio: 327 / 206;
+  padding: 0;
+  background: none;
+  object-fit: contain;
+}
+
+.cardart--image::after {
+  content: none;
+}
+
+.cardart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/header-texture.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.cardart > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cardart__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardart__kind {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cardart__logo {
+  width: 74px;
+  height: auto;
+}
+
+.cardart__num {
+  margin: 30px 0 14px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cardart__meta {
+  display: flex;
+  gap: 26px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cardart__meta span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cardart__holder {
+  margin: 14px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* PL-5: the "Got your card? Activate Now!" prompt, tied to the physical card. */
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 14px var(--gutter) 0;
+  width: calc(100% - (var(--gutter) * 2));
+  padding: 14px 16px;
+  border-radius: var(--radius-field);
+  background: var(--surface-brand-soft);
+  text-align: left;
+  min-height: 44px;
+}
+
+.prompt__text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--link);
+}
+
+.prompt__cta {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--link);
+  white-space: nowrap;
+}
+
+.support-note {
+  margin: 14px var(--gutter) 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-field);
+  background: var(--gray-001);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.rows {
+  margin: 20px 0 0;
+  border-top: 1px solid #edf1f4;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px var(--gutter);
+  border-bottom: 1px solid #edf1f4;
+  background: var(--surface-card);
+  text-align: left;
+  min-height: 44px;
+}
+
+button.row:hover {
+  background: var(--gray-001);
+}
+
+.row__icon {
+  flex: none;
+  color: var(--primary);
+}
+
+.row__label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.row__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+}
+
+.row--static .row__right {
+  color: inherit;
+}
+
+/* ===========================================================================
+   Bottom sheet — card activation and the unlock confirmation
+   =========================================================================== */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  animation: fade-in 0.18s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 32, 58, 0.5);
+  border: none;
+  padding: 0;
+  cursor: default;
+}
+
+.overlay__sheet {
+  position: relative;
+  width: 100%;
+  background: var(--surface-card);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  padding: 12px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  animation: sheet-up 0.24s ease;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.overlay__grip {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--stroke);
+  margin: 0 auto 18px;
+}
+
+.overlay__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.overlay__sub {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.overlay__actions {
+  margin-top: 22px;
+}
+
+.cvv-hint {
+  margin: 16px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 /* ===========================================================================

@@ -1,4 +1,5 @@
 import { Poppins } from "next/font/google";
+import { CardsProvider } from "../components/CardsProvider";
 import "./globals.css";
 
 /* BR-8 / the live app's text styles: Poppins. */
@@ -25,6 +26,8 @@ const FLOWS = [
   ["F-1", "Register — email, email OTP, create password, success"],
   ["F-2", "Login — credentials or Face ID / Biometric"],
   ["F-3", "Forgot Password — email, code, new password, all done"],
+  ["F-4", "Activate Card — CVV, set PIN, confirm PIN, activated"],
+  ["F-5", "Unblock Card — unlock confirmation, card active"],
 ];
 
 export default function RootLayout({ children }) {
@@ -52,10 +55,14 @@ export default function RootLayout({ children }) {
               Enrollment is the shortened sequence: Habemco onboards the card and
               passes the PRN and email to ENACOMM, so the customer never enters a
               card number, CVV, SSN or date of birth. Use any email; the emailed
-              code is <strong style={{ color: "#93a5b8" }}>7336</strong>.
+              code is <strong style={{ color: "#93a5b8" }}>7336</strong>. The card
+              flows start from Home — tap the Shipped card for F-4, the Suspended
+              card for F-5.
             </p>
           </aside>
-          <div className="device">{children}</div>
+          <div className="device">
+            <CardsProvider>{children}</CardsProvider>
+          </div>
         </div>
       </body>
     </html>
