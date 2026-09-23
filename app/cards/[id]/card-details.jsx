@@ -5,17 +5,19 @@ import { useEffect, useState } from "react";
 
 import { STATUS_LABEL, useCards } from "../../../components/CardsProvider";
 import {
+  AppleIcon,
   BigCheck,
+  CardOffIcon,
   CheckOnFill,
   ChevronRight,
-  FreezeIcon,
+  EditIcon,
+  LimitsIcon,
   MailIcon,
   PhoneIcon,
-  PinIcon,
   StatusDotIcon,
   SwapIcon,
+  TravelIcon,
   UnlockIcon,
-  WalletIcon,
 } from "../../../components/icons";
 import {
   Button,
@@ -142,21 +144,22 @@ export default function CardDetails({ id }) {
   });
 
   if (card.status === "active") {
-    /* F-7 Card Management: the Manage pin path. */
+    rows.push({ key: "limits", icon: <LimitsIcon />, label: "Limits" });
+    rows.push({ key: "travel", icon: <TravelIcon />, label: "Travel indicator" });
+    /* F-7 Card Management runs from this row. */
     rows.push({
       key: "pin",
-      icon: <PinIcon />,
-      label: "Manage pin",
+      icon: <EditIcon />,
+      label: "Change pin",
       onClick: () => setStep("pinMethod"),
     });
-    /* PL-4: renamed from "Add to Apple Pay". */
-    rows.push({ key: "wallet", icon: <WalletIcon />, label: "Add to mobile wallet" });
+    rows.push({ key: "wallet", icon: <AppleIcon />, label: "Add to Apple Pay" });
     rows.push({
-      key: "suspend",
-      icon: <FreezeIcon />,
-      label: "Suspend/Lost/Stolen Card",
+      key: "lost",
+      icon: <CardOffIcon />,
+      label: "Lost or damaged card",
+      danger: true,
     });
-    rows.push({ key: "replace", icon: <SwapIcon />, label: "Replace Card" });
   }
 
   if (card.status === "suspended") {
@@ -218,9 +221,16 @@ export default function CardDetails({ id }) {
       ) : null}
 
       <div className="rows">
-        {rows.map((r) =>
-          r.onClick ? (
-            <button key={r.key} type="button" className="row" onClick={r.onClick}>
+        {rows.map((r) => {
+          const cls = [
+            "row",
+            r.static ? "row--static" : "",
+            r.danger ? "row--danger" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return r.onClick ? (
+            <button key={r.key} type="button" className={cls} onClick={r.onClick}>
               <span className="row__icon">{r.icon}</span>
               <p className="row__label">{r.label}</p>
               <span className="row__right">
@@ -228,13 +238,13 @@ export default function CardDetails({ id }) {
               </span>
             </button>
           ) : (
-            <div key={r.key} className={r.static ? "row row--static" : "row"}>
+            <div key={r.key} className={cls}>
               <span className="row__icon">{r.icon}</span>
               <p className="row__label">{r.label}</p>
               <span className="row__right">{r.right ?? <ChevronRight />}</span>
             </div>
-          )
-        )}
+          );
+        })}
       </div>
 
       {/* ---------------- F-4: Activate Card (PL-6) ---------------- */}
