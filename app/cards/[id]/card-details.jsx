@@ -175,7 +175,8 @@ export default function CardDetails({ id }) {
     <main className="screen">
       <TopBar title="Card Details" onBack={() => router.push("/home")} />
 
-      {displayed.art ? (
+      <div className="card-panel">
+        {displayed.art ? (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
           className="cardart cardart--image"
@@ -213,11 +214,12 @@ export default function CardDetails({ id }) {
         </button>
       ) : null}
 
-      {card.status === "suspended" ? (
-        <p className="support-note">
-          Contact support if you suspect your card was lost or stolen.
-        </p>
-      ) : null}
+        {card.status === "suspended" ? (
+          <p className="support-note">
+            Contact support if you suspect your card was lost or stolen.
+          </p>
+        ) : null}
+      </div>
 
       <h2 className="rows__title">Details</h2>
 
