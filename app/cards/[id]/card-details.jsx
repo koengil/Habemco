@@ -137,9 +137,8 @@ export default function CardDetails({ id }) {
     key: "status",
     icon: <StatusDotIcon />,
     label: "Status",
-    right: (
-      <span className={`chip chip--${card.status}`}>{STATUS_LABEL[card.status]}</span>
-    ),
+    /* Plain link-coloured value, as the live screen shows it — not a chip. */
+    right: <span className="row__status">{STATUS_LABEL[card.status]}</span>,
     static: true,
   });
 
@@ -219,6 +218,8 @@ export default function CardDetails({ id }) {
           Contact support if you suspect your card was lost or stolen.
         </p>
       ) : null}
+
+      <h2 className="rows__title">Details</h2>
 
       <div className="rows">
         {rows.map((r) => {

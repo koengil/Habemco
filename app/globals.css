@@ -1157,8 +1157,20 @@ input {
 }
 
 .rows {
-  margin: 20px 0 0;
-  border-top: 1px solid #edf1f4;
+  margin: 8px 0 0;
+}
+
+.rows__title {
+  margin: 0;
+  padding: 16px var(--gutter) 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* No rule closing the list — the last row's divider is dropped. */
+.rows .row:last-child {
+  border-bottom: none;
 }
 
 .row {
@@ -1200,17 +1212,41 @@ button.row:hover {
   color: inherit;
 }
 
+.row__status {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--link);
+}
+
+/* Destructive row — label, icon and chevron all take the error colour. */
+.row--danger .row__label,
+.row--danger .row__icon,
+.row--danger .row__right {
+  color: var(--error);
+}
+
 /* ===========================================================================
    Bottom sheet — card activation and the unlock confirmation
    =========================================================================== */
 
+/*
+ * `overflow: hidden` matters: the sheet animates in from translateY(18px),
+ * which briefly extends past the overlay and made the screen's scrollbar flash
+ * on open. Clipping here keeps the sheet from ever creating overflow.
+ */
 .overlay {
   position: absolute;
   inset: 0;
   z-index: 30;
   display: flex;
   align-items: flex-end;
+  overflow: hidden;
   animation: fade-in 0.18s ease;
+}
+
+/* Lock the screen behind an open sheet so it cannot scroll out from under it. */
+.screen:has(.overlay) {
+  overflow: hidden;
 }
 
 @keyframes fade-in {
