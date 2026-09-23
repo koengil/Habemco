@@ -1018,10 +1018,11 @@ input {
    Card details — F-4 / F-5 (PL-4, PL-5, PL-7)
    =========================================================================== */
 
-/* The card sits on a light grey panel; the Details list below is white. */
+/* The card sits on a light grey panel; the Details list below is white.
+   #F3F4F5 sampled from the Figma frame (Settings, node 4964:11533). */
 .card-panel {
   flex: none;
-  background: var(--gray-001);
+  background: #f3f4f5;
   padding-bottom: 20px;
 }
 
