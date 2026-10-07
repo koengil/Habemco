@@ -103,11 +103,14 @@ export default function CardDetails({ id }) {
     );
   }
 
-  /* PL-5 / OQ-5: a Shipped physical card displays the virtual card's details. */
-  const displayed =
-    card.status === "shipped" && card.showsVirtual
-      ? getCard(card.showsVirtual) || card
-      : card;
+  /*
+   * PL-5 / OQ-5: a Shipped physical card displays the virtual card's details.
+   * It keeps doing so once activated, so the card art does not change layout
+   * mid-flow.
+   */
+  const displayed = card.showsVirtual
+    ? getCard(card.showsVirtual) || card
+    : card;
 
   const closeFlow = () => {
     setStep("closed");

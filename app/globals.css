@@ -846,7 +846,9 @@ input {
 /* quick actions */
 .quick {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* One equal column per action, so they spread across the full width. */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 8px;
   padding: 22px var(--gutter) 6px;
   flex: none;
