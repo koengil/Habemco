@@ -220,6 +220,12 @@ input {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  /* Still scrolls, but without a visible bar — phones don't show one either. */
+  scrollbar-width: none;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
 }
 
 .statusbar {
@@ -1384,6 +1390,33 @@ button.row:hover {
 }
 
 /* Title row + filter, then the search field — the live SearchAndFilter. */
+.acct-tabs {
+  flex: none;
+  display: flex;
+  margin: 14px var(--gutter) 0;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.acct-tab {
+  flex: 1 1 0;
+  padding: 10px 0 9px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.acct-tab--on {
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom-color: var(--link);
+}
+
 .txn-tools {
   flex: none;
   display: flex;

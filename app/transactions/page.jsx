@@ -29,17 +29,23 @@ import { TRANSACTIONS, groupByDate, money } from "../../lib/transactions";
  *     it does not read as a primary action
  *   - Contact Support moves to the upper right corner of the header
  */
+const ACCOUNTS = [
+  { key: "credit", label: "Credit Account" },
+  { key: "deposit", label: "Deposit Account" },
+];
+
 export default function TransactionHistoryPage() {
   const router = useRouter();
+  const [account, setAccount] = useState("credit");
   const [query, setQuery] = useState("");
 
   const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const list = q
-      ? TRANSACTIONS.filter((t) => t.name.toLowerCase().includes(q))
-      : TRANSACTIONS;
+    const list = TRANSACTIONS.filter(
+      (t) => t.account === account && (!q || t.name.toLowerCase().includes(q))
+    );
     return groupByDate(list);
-  }, [query]);
+  }, [account, query]);
 
   return (
     <main className="screen">
@@ -66,6 +72,21 @@ export default function TransactionHistoryPage() {
           Direct Deposit Info
         </button>
       </header>
+
+      <div className="acct-tabs" role="tablist">
+        {ACCOUNTS.map(({ key, label }) => (
+          <button
+            key={key}
+            type="button"
+            role="tab"
+            aria-selected={account === key}
+            className={account === key ? "acct-tab acct-tab--on" : "acct-tab"}
+            onClick={() => setAccount(key)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
       <div className="txn-tools">
         <div className="txn-tools__row">
