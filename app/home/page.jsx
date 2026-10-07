@@ -7,10 +7,7 @@ import {
   ArrowLeft,
   CardIcon,
   ChevronRight,
-  MoreIcon,
-  RecipientsIcon,
   TransactionsIcon,
-  TransfersIcon,
 } from "../../components/icons";
 import { StatusBar, TabBar } from "../../components/ui";
 
@@ -23,17 +20,14 @@ import { StatusBar, TabBar } from "../../components/ui";
  * flows begin from this one screen. The cardholder name is the neutral
  * placeholder OQ-2 asks for.
  *
- * The card rows are real tap targets into Card Details. The quick actions are
- * not: Transactions, Transfers, Recipients and More are outside this
- * prototype's scope, so they are not drawn as something that leads anywhere.
+ * The card rows are real tap targets into Card Details. Transfers, Recipients
+ * and More are outside this prototype's scope, so they are hidden and only
+ * Transactions is shown as a quick action.
  */
 
-/* Transactions opens F-6; the rest are outside this prototype's scope. */
+/* Transactions opens F-6. */
 const QUICK = [
   { label: "Transactions", Icon: TransactionsIcon, href: "/transactions" },
-  { label: "Transfers", Icon: TransfersIcon },
-  { label: "Recipients", Icon: RecipientsIcon },
-  { label: "More", Icon: MoreIcon },
 ];
 
 export default function HomePage() {
@@ -80,28 +74,19 @@ export default function HomePage() {
         </header>
 
         <div className="quick">
-          {QUICK.map(({ label, Icon, href }) =>
-            href ? (
-              <button
-                key={label}
-                type="button"
-                className="quick__item"
-                onClick={() => router.push(href)}
-              >
-                <span className="quick__icon">
-                  <Icon />
-                </span>
-                <span>{label}</span>
-              </button>
-            ) : (
-              <div key={label} className="quick__item">
-                <span className="quick__icon">
-                  <Icon />
-                </span>
-                <span>{label}</span>
-              </div>
-            )
-          )}
+          {QUICK.map(({ label, Icon, href }) => (
+            <button
+              key={label}
+              type="button"
+              className="quick__item"
+              onClick={() => router.push(href)}
+            >
+              <span className="quick__icon">
+                <Icon />
+              </span>
+              <span>{label}</span>
+            </button>
+          ))}
         </div>
 
         <div className="section-head">

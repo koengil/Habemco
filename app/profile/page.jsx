@@ -2,13 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import {
-  BellIcon,
-  ChevronRight,
-  PinIcon,
-  SupportIcon,
-  UserIcon,
-} from "../../components/icons";
+import { ChevronRight, PinIcon, UserIcon } from "../../components/icons";
 import { TabBar, TopBar } from "../../components/ui";
 
 /**
@@ -18,13 +12,13 @@ import { TabBar, TopBar } from "../../components/ui";
  * PL-9: the Select Language option is removed (BR-9), and the email address
  * replaces the username handle under the name — the username *is* the email
  * now, so a separate handle would contradict RG-6.
+ *
+ * Manage Profile, Notification Preferences and Contact Support are hidden:
+ * they are outside this prototype's scope.
  */
 
 const ROWS = [
   { key: "password", label: "Edit Password", Icon: PinIcon, href: "/profile/edit-password" },
-  { key: "manage", label: "Manage Profile", Icon: UserIcon },
-  { key: "notifications", label: "Notification Preferences", Icon: BellIcon },
-  { key: "support", label: "Contact Support", Icon: SupportIcon },
 ];
 
 export default function ProfilePage() {
@@ -44,34 +38,22 @@ export default function ProfilePage() {
       </div>
 
       <div className="rows">
-        {ROWS.map(({ key, label, Icon, href }) =>
-          href ? (
-            <button
-              key={key}
-              type="button"
-              className="row"
-              onClick={() => router.push(href)}
-            >
-              <span className="row__icon">
-                <Icon />
-              </span>
-              <p className="row__label">{label}</p>
-              <span className="row__right">
-                <ChevronRight />
-              </span>
-            </button>
-          ) : (
-            <div key={key} className="row">
-              <span className="row__icon">
-                <Icon />
-              </span>
-              <p className="row__label">{label}</p>
-              <span className="row__right">
-                <ChevronRight />
-              </span>
-            </div>
-          )
-        )}
+        {ROWS.map(({ key, label, Icon, href }) => (
+          <button
+            key={key}
+            type="button"
+            className="row"
+            onClick={() => router.push(href)}
+          >
+            <span className="row__icon">
+              <Icon />
+            </span>
+            <p className="row__label">{label}</p>
+            <span className="row__right">
+              <ChevronRight />
+            </span>
+          </button>
+        ))}
       </div>
 
       <TabBar active="profile" />

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import { CardIcon } from "../../../components/icons";
 import { Button, TabBar, TopBar } from "../../../components/ui";
 import { getTransaction, money } from "../../../lib/transactions";
 
@@ -29,13 +30,12 @@ export default function TransactionDetails({ id }) {
     );
   }
 
+  /* Same fields, in the same order, as the live Transaction Details screen. */
   const rows = [
-    ["Status", t.status],
-    ["Date", `${t.date}, ${t.time}`],
+    ["Amount", money(t.amount)],
+    ["Description", t.description],
     ["Type", t.type],
-    ["Category", t.category],
-    ["Paid with", t.method],
-    ["Reference", t.reference],
+    ["Status", t.status],
   ];
 
   return (
@@ -43,10 +43,12 @@ export default function TransactionDetails({ id }) {
       <TopBar title="Transaction Details" onBack={() => router.push("/transactions")} />
 
       <div className="detail-hero">
-        <p className={t.amount > 0 ? "detail-hero__amt detail-hero__amt--in" : "detail-hero__amt"}>
-          {money(t.amount)}
+        <span className="detail-hero__icon">
+          <CardIcon size={26} />
+        </span>
+        <p className="detail-hero__caption">
+          {t.type}: {money(t.amount)}
         </p>
-        <p className="detail-hero__name">{t.name}</p>
       </div>
 
       <dl className="dl">

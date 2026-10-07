@@ -7,16 +7,14 @@ import { STATUS_LABEL, useCards } from "../../../components/CardsProvider";
 import {
   AppleIcon,
   BigCheck,
-  CardOffIcon,
   CheckOnFill,
   ChevronRight,
   EditIcon,
-  LimitsIcon,
+  FreezeIcon,
   MailIcon,
   PhoneIcon,
   StatusDotIcon,
   SwapIcon,
-  TravelIcon,
   UnlockIcon,
 } from "../../../components/icons";
 import {
@@ -137,28 +135,29 @@ export default function CardDetails({ id }) {
     key: "status",
     icon: <StatusDotIcon />,
     label: "Status",
-    /* Plain link-coloured value, as the live screen shows it — not a chip. */
-    right: <span className="row__status">{STATUS_LABEL[card.status]}</span>,
+    right: (
+      <span className={`chip chip--${card.status}`}>
+        {STATUS_LABEL[card.status]}
+      </span>
+    ),
     static: true,
   });
 
   if (card.status === "active") {
-    rows.push({ key: "limits", icon: <LimitsIcon />, label: "Limits" });
-    rows.push({ key: "travel", icon: <TravelIcon />, label: "Travel indicator" });
     /* F-7 Card Management runs from this row. */
     rows.push({
       key: "pin",
       icon: <EditIcon />,
-      label: "Change pin",
+      label: "Manage pin",
       onClick: () => setStep("pinMethod"),
     });
     rows.push({ key: "wallet", icon: <AppleIcon />, label: "Add to Apple Pay" });
     rows.push({
-      key: "lost",
-      icon: <CardOffIcon />,
-      label: "Lost or damaged card",
-      danger: true,
+      key: "suspend",
+      icon: <FreezeIcon />,
+      label: "Suspend/Lost/Stolen Card",
     });
+    rows.push({ key: "replace", icon: <SwapIcon />, label: "Replace Card" });
   }
 
   if (card.status === "suspended") {
