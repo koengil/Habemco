@@ -841,7 +841,8 @@ input {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--brand-marigold);
+  /* Brighter than --error, which is too dark to read on the navy bar. */
+  background: #ff4d4f;
 }
 
 .msgbar__chev {
